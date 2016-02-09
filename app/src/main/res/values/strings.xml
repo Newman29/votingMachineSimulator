@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">Voting Machine Simullator</string>
+    <string name="app_name">Voting Machine Simulator</string>
+    <string name="confirmPassword">Confirm Password</string>
 </resources>
