@@ -50,18 +50,7 @@ public class MainActivity extends AppCompatActivity {
         prefs.edit().putBoolean("firstTimeUsing", true).apply();
 
         if (isRooted()) {
-            new AlertDialog.Builder(this)
-                    .setTitle("Unsecure Phone")
-                    .setMessage("We detect that this device is rooted, enabling it to be unsecure for this application. If you feel like this is a mistake, feel free to contact the developer. The application will now be uninstalled")
-                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            // continue with delete
-                            uninstallApp();
-                            finish();
-                        }
-                    })
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .show();
+            createUnsecureDialog();
         } else {
             //Try and detect if this is the users first time launching the app
             if (prefs.getBoolean("firstTimeUsing", true)) {
@@ -112,10 +101,24 @@ public class MainActivity extends AppCompatActivity {
                 String password = passwordInput.getText().toString();
 
 
-
                 passwordDialog.dismiss();
             }
         });
+    }
+
+    private void createUnsecureDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("Unsecure Phone")
+                .setMessage(R.string.unsecureMessage)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with delete
+                        uninstallApp();
+                        finish();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
     private void uninstallApp() {
@@ -126,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Checks if the device is rooted.
-     * <p>
+     *
      * http://stackoverflow.com/questions/19288463/how-to-check-if-android-phone-is-rooted
      *
      * @return true if device is rooted, otherwise false
