@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.io.File;
 
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     //Declare the SharedPreferences and Editor
     private static SharedPreferences prefs;
     private static SharedPreferences.Editor editor;
+    private static final int minPasswordLength = 6;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,8 +102,14 @@ public class MainActivity extends AppCompatActivity {
                 EditText passwordInput = (EditText) passwordDialog.findViewById(R.id.edit_adminPassword);
                 String password = passwordInput.getText().toString();
 
-
-                passwordDialog.dismiss();
+                if (password.equals("")) {
+                    Toast.makeText(getApplicationContext(), R.string.invalidPasswordToast, Toast.LENGTH_SHORT).show();
+                } else if (password.contains(" ") || password.length() < minPasswordLength) {
+                    Toast.makeText(getApplicationContext(), R.string.invalidPassword, Toast.LENGTH_SHORT).show();
+                } else {
+                    editor.putString("adminPassword", password).commit();
+                    passwordDialog.dismiss();
+                }
             }
         });
     }
@@ -112,7 +120,6 @@ public class MainActivity extends AppCompatActivity {
                 .setMessage(R.string.unsecureMessage)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        // continue with delete
                         uninstallApp();
                         finish();
                     }

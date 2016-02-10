@@ -2,4 +2,6 @@
     <string name="app_name">Voting Machine Simulator</string>
     <string name="confirmPassword">Confirm Password</string>
     <string name="unsecureMessage">"We detect that this device is rooted, enabling it to be unsecure for this application. If you feel like this is a mistake, feel free to contact the developer. The application will now be uninstalled"</string>
+    <string name="invalidPasswordToast">Please enter a valid password</string>
+    <string name="invalidPassword">Invalid Password</string>
 </resources>
