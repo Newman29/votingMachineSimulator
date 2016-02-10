@@ -1,14 +1,13 @@
 package com.newman.ryan.votingmachinesimullator;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
-import android.support.v7.app.AlertDialog;
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -41,12 +40,23 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Button adminLoginButton;
+
         prefs = this.getSharedPreferences("com.newman.ryan.votingmachinesimullator",
                 Context.MODE_PRIVATE);
         editor = getPreferences(MODE_PRIVATE).edit();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        adminLoginButton = (Button) findViewById(R.id.btn_adminLogin);
+
+        adminLoginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                adminLogin();
+            }
+        });
 
         //set the flag to false while development for debugging purposes
         prefs.edit().putBoolean("firstTimeUsing", true).apply();
@@ -55,19 +65,27 @@ public class MainActivity extends AppCompatActivity {
             createUnsecureDialog();
         } else {
             //Try and detect if this is the users first time launching the app
-            if (prefs.getBoolean("firstTimeUsing", true)) {
+            if (firstTimeLoggingIn()) {
                 Log.d("First time launching: ", "yes");
 
                 addCandidates(democratCandidates);
                 addCandidates(republicanCandidates);
 
-                createPasswordDialog();
+                createPasswordDialog("Confirm Password");
 
                 prefs.edit().putBoolean("firstTimeUsing", false).apply();
             } else {
                 Log.d("First time launching: ", "no");
             }
         }
+    }
+
+    private boolean firstTimeLoggingIn() {
+        return prefs.getBoolean("firstTimeUsing", true);
+    }
+
+    private void adminLogin() {
+        createPasswordDialog("Enter");
     }
 
     /*
@@ -86,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
         editor.commit();
     }
 
-    private void createPasswordDialog() {
+    private void createPasswordDialog(String buttonText) {
         final AlertDialog passwordDialog = new AlertDialog.Builder(this)
                 .setTitle("Enter An Administrative Password")
                 .setView(R.layout.admin_password_dialog)
@@ -95,6 +113,9 @@ public class MainActivity extends AppCompatActivity {
         passwordDialog.show();
 
         Button confirmPassword = (Button) passwordDialog.findViewById(R.id.btn_confirmPassword);
+
+        confirmPassword.setText(buttonText);
+
         confirmPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -102,16 +123,28 @@ public class MainActivity extends AppCompatActivity {
                 EditText passwordInput = (EditText) passwordDialog.findViewById(R.id.edit_adminPassword);
                 String password = passwordInput.getText().toString();
 
-                if (password.equals("")) {
-                    Toast.makeText(getApplicationContext(), R.string.invalidPasswordToast, Toast.LENGTH_SHORT).show();
-                } else if (password.contains(" ") || password.length() < minPasswordLength) {
-                    Toast.makeText(getApplicationContext(), R.string.invalidPassword, Toast.LENGTH_SHORT).show();
+                if (firstTimeLoggingIn()) {
+                    firstTimePassword(password, passwordDialog);
                 } else {
-                    editor.putString("adminPassword", password).commit();
-                    passwordDialog.dismiss();
+                    checkPassword(password);
                 }
             }
         });
+    }
+
+    private void checkPassword(String password) {
+
+    }
+
+    private void firstTimePassword (String password, android.support.v7.app.AlertDialog passwordDialog) {
+        if (password.equals("")) {
+            Toast.makeText(getApplicationContext(), R.string.invalidPasswordToast, Toast.LENGTH_SHORT).show();
+        } else if (password.contains(" ") || password.length() < minPasswordLength) {
+            Toast.makeText(getApplicationContext(), R.string.invalidPassword, Toast.LENGTH_SHORT).show();
+        } else {
+            editor.putString("adminPassword", password).commit();
+            passwordDialog.dismiss();
+        }
     }
 
     private void createUnsecureDialog() {
