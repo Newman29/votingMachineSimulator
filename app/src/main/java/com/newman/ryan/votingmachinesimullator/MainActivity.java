@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
         prefs = this.getSharedPreferences("com.newman.ryan.votingmachinesimullator",
                 Context.MODE_PRIVATE);
-        editor = getPreferences(MODE_PRIVATE).edit();
+        editor = prefs.edit();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -57,6 +57,10 @@ public class MainActivity extends AppCompatActivity {
                 adminLogin();
             }
         });
+
+        //clear out sharedpreferences for debugging purposes
+        editor.clear();
+        editor.apply();
 
         //set the flag to false while development for debugging purposes
         prefs.edit().putBoolean("firstTimeUsing", true).apply();
@@ -74,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
                 createPasswordDialog("Confirm Password");
 
                 prefs.edit().putBoolean("firstTimeUsing", false).apply();
+                prefs.edit().putBoolean("isAdminPasswordSet", false).apply();
             } else {
                 Log.d("First time launching: ", "no");
             }
@@ -114,7 +119,11 @@ public class MainActivity extends AppCompatActivity {
 
         Button confirmPassword = (Button) passwordDialog.findViewById(R.id.btn_confirmPassword);
 
-        confirmPassword.setText(buttonText);
+        if (firstTimeLoggingIn()) {
+            confirmPassword.setText(buttonText);
+        } else {
+            confirmPassword.setText("Enter Password");
+        }
 
         confirmPassword.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,26 +132,41 @@ public class MainActivity extends AppCompatActivity {
                 EditText passwordInput = (EditText) passwordDialog.findViewById(R.id.edit_adminPassword);
                 String password = passwordInput.getText().toString();
 
-                if (firstTimeLoggingIn()) {
+                if (!isPasswordSet()) {
                     firstTimePassword(password, passwordDialog);
                 } else {
-                    checkPassword(password);
+                    checkPassword(password, passwordDialog);
                 }
             }
         });
     }
 
-    private void checkPassword(String password) {
-
+    private boolean isPasswordSet () {
+        return prefs.getBoolean("isAdminPasswordSet", false);
     }
 
-    private void firstTimePassword (String password, android.support.v7.app.AlertDialog passwordDialog) {
+
+    private void checkPassword(String password, android.support.v7.app.AlertDialog passwordDialog) {
+        String currentPassword = prefs.getString("adminPassword", "Not Found");
+
+        Log.d("Current Password: ", currentPassword);
+
+        if (currentPassword.equals(password)) {
+            Toast.makeText(this, "Passwords match", Toast.LENGTH_SHORT).show();
+            passwordDialog.dismiss();
+        } else {
+            Toast.makeText(MainActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void firstTimePassword(String password, android.support.v7.app.AlertDialog passwordDialog) {
         if (password.equals("")) {
             Toast.makeText(getApplicationContext(), R.string.invalidPasswordToast, Toast.LENGTH_SHORT).show();
         } else if (password.contains(" ") || password.length() < minPasswordLength) {
             Toast.makeText(getApplicationContext(), R.string.invalidPassword, Toast.LENGTH_SHORT).show();
         } else {
-            editor.putString("adminPassword", password).commit();
+            editor.putString("adminPassword", password).apply();
+            editor.putBoolean("isAdminPasswordSet", true).apply();
             passwordDialog.dismiss();
         }
     }
@@ -169,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Checks if the device is rooted.
-     *
+     * <p>
      * http://stackoverflow.com/questions/19288463/how-to-check-if-android-phone-is-rooted
      *
      * @return true if device is rooted, otherwise false
