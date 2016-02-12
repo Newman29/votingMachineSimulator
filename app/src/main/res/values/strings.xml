@@ -5,4 +5,6 @@
     <string name="invalidPasswordToast">Please enter a valid password</string>
     <string name="invalidPassword">Invalid Password</string>
     <string name="adminLoginButton">Admin Login</string>
+    <string name="democrat">Democrat</string>
+    <string name="republican">Republican</string>
 </resources>

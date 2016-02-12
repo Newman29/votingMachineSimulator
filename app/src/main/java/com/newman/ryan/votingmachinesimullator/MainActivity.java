@@ -39,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Button adminLoginButton;
+        Button democraticVote;
+        Button republicanVote;
 
         prefs = this.getSharedPreferences("com.newman.ryan.votingmachinesimullator",
                 Context.MODE_PRIVATE);
@@ -48,11 +50,27 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         adminLoginButton = (Button) findViewById(R.id.btn_adminLogin);
+        democraticVote = (Button) findViewById(R.id.btn_democratCandidates);
+        republicanVote = (Button) findViewById(R.id.btn_republicanCandidates);
 
         adminLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 adminLogin();
+            }
+        });
+
+        democraticVote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "Democratic", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        republicanVote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "Republican", Toast.LENGTH_SHORT).show();
             }
         });
 
