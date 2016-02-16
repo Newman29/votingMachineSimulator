@@ -161,7 +161,6 @@ public class MainActivity extends AppCompatActivity {
         return prefs.getBoolean("isAdminPasswordSet", false);
     }
 
-
     private void checkPassword(String password, android.support.v7.app.AlertDialog passwordDialog) {
         String currentPassword = prefs.getString("adminPassword", "Not Found");
 
