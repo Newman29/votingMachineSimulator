@@ -63,7 +63,8 @@ public class MainActivity extends AppCompatActivity {
         democraticVote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Democratic", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Democrat", Toast.LENGTH_SHORT).show();
+                startVotingIntent(democratCandidates);
             }
         });
 
@@ -71,14 +72,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this, "Republican", Toast.LENGTH_SHORT).show();
+                startVotingIntent(republicanCandidates);
             }
         });
 
+        //TODO: Clear this to test actually having this in production
         //clear out sharedpreferences for debugging purposes
         editor.clear();
         editor.apply();
 
-        //set the flag to false while development for debugging purposes
+        //set the flag to true while development for debugging purposes
         prefs.edit().putBoolean("firstTimeUsing", true).apply();
 
         if (isRooted()) {
@@ -99,6 +102,16 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("First time launching: ", "no");
             }
         }
+    }
+
+    private void startVotingIntent (String[] candidates) {
+        Intent intent = new Intent(this, VotingActivity.class);
+        intent.putExtra("candidates", candidates);
+
+        //this is to prevent two activities starting if the user clicks on the button twice
+        intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+
+        startActivity(intent);
     }
 
     private boolean firstTimeLoggingIn() {

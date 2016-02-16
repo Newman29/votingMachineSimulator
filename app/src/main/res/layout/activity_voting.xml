@@ -41,6 +41,7 @@
     </LinearLayout>
 
     <RadioGroup
+        android:id="@+id/group_Candidates"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
