@@ -63,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
         democraticVote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Democrat", Toast.LENGTH_SHORT).show();
                 startVotingIntent(democratCandidates);
             }
         });
@@ -71,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
         republicanVote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Republican", Toast.LENGTH_SHORT).show();
                 startVotingIntent(republicanCandidates);
             }
         });
@@ -143,6 +141,8 @@ public class MainActivity extends AppCompatActivity {
                 .setTitle("Enter An Administrative Password")
                 .setView(R.layout.admin_password_dialog)
                 .create();
+
+        passwordDialog.setCancelable(false);
 
         passwordDialog.show();
 
