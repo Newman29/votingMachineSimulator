@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -44,7 +45,7 @@ public class VotingActivity extends AppCompatActivity {
         submitVote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Toast.makeText(VotingActivity.this, "Submit Vote", Toast.LENGTH_SHORT).show();
             }
         });
     }
