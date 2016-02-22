@@ -18,7 +18,6 @@ import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
     private String[] republicanCandidates = {
-            "Jeb Bush",
             "Ben Carson",
             "Ted Cruz",
             "John Kasich",
