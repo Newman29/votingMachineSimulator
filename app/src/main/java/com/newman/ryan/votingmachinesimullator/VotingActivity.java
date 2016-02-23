@@ -1,5 +1,7 @@
 package com.newman.ryan.votingmachinesimullator;
 
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.style.TextAppearanceSpan;
@@ -45,9 +47,27 @@ public class VotingActivity extends AppCompatActivity {
         submitVote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(VotingActivity.this, "Submit Vote", Toast.LENGTH_SHORT).show();
+                if (candidateRadioGroup.getCheckedRadioButtonId() == -1) {
+                    //None is selected
+                    createInvalidSelectionDialog();
+                } else {
+
+                }
             }
         });
+    }
+
+    private void createInvalidSelectionDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("Invalid Selection")
+                .setMessage(getString(R.string.invalidSelection))
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
     private void setCancelClickListener(Button cancelVote) {
@@ -66,7 +86,7 @@ public class VotingActivity extends AppCompatActivity {
 
             candidateButton.setText(candidate);
             candidateButton.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
-            candidateButton.setPadding(25, 25, 25, 25);
+            candidateButton.setPadding(5, 50, 25, 25);
 
             candidateRadioGroup.addView(candidateButton);
         }

@@ -9,4 +9,5 @@
     <string name="republican">Republican</string>
     <string name="submitVote">Submit Vote</string>
     <string name="cancelVote">Cancel Vote</string>
+    <string name="invalidSelection">Please select a candidate before submitting a vote</string>
 </resources>
