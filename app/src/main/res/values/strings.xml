@@ -10,4 +10,6 @@
     <string name="submitVote">Submit Vote</string>
     <string name="cancelVote">Cancel Vote</string>
     <string name="invalidSelection">Please select a candidate before submitting a vote</string>
+    <string name="voteConfirmation">Thank you for submitting your vote for the upcoming 2016 Presidential Election!</string>
+    <string name="errorSubmittingVote">There was an error processing your vote. Please contact the nearest administrator for assistance</string>
 </resources>

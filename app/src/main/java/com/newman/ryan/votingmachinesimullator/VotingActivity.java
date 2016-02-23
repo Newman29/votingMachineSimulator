@@ -51,10 +51,60 @@ public class VotingActivity extends AppCompatActivity {
                     //None is selected
                     createInvalidSelectionDialog();
                 } else {
+                    String selectedCandidate = getSelection();
+                    Log.d("Selected Candidate ", selectedCandidate);
 
+                    if (submitVote(selectedCandidate)) {
+                        createThankYouDialog();
+                    } else {
+                        createErrorSubmittingVoteDialog();
+                    }
                 }
             }
         });
+    }
+
+    private boolean submitVote(String selectedCandidate) {
+        try {
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    private void createErrorSubmittingVoteDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("Error Submitting Vote")
+                .setMessage(getString(R.string.errorSubmittingVote))
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+
+    private void createThankYouDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("Vote Submitted")
+                .setMessage(getString(R.string.voteConfirmation))
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .show();
+    }
+
+    private String getSelection() {
+        int selectionID = candidateRadioGroup.getCheckedRadioButtonId();
+        View selectedRadioButton = candidateRadioGroup.findViewById(selectionID);
+        int radioID = candidateRadioGroup.indexOfChild(selectedRadioButton);
+        RadioButton selection = (RadioButton) candidateRadioGroup.getChildAt(radioID);
+        return (String) selection.getText();
     }
 
     private void createInvalidSelectionDialog() {
