@@ -1,5 +1,6 @@
 package com.newman.ryan.votingmachinesimullator;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -68,7 +69,8 @@ public class VotingActivity extends AppCompatActivity {
 
     private boolean submitVote(String selectedCandidate) {
         try {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+            SharedPreferences prefs = getSharedPreferences("com.newman.ryan.votingmachinesimullator",
+                    Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = prefs.edit();
             String sharedPrefsKey = selectedCandidate.replace(" ", "");
             boolean hasKeyValue = prefs.contains(sharedPrefsKey);
