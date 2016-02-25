@@ -83,6 +83,7 @@ public class VotingActivity extends AppCompatActivity {
                 Log.d("Pre count ", Integer.toString(voteCount));
 
                 if (voteCount == -1) {
+                    Log.d("ERROR ", "Did not get shared preference");
                     return false;
                 }
 
