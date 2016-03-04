@@ -179,11 +179,16 @@ public class MainActivity extends AppCompatActivity {
         Log.d("Current Password: ", currentPassword);
 
         if (currentPassword.equals(password)) {
-            Toast.makeText(this, "Passwords match", Toast.LENGTH_SHORT).show();
-            passwordDialog.dismiss();
+            adminActivity();
         } else {
             Toast.makeText(MainActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void adminActivity() {
+        Intent intent = new Intent(this, ResultsActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+        startActivity(intent);
     }
 
     private void firstTimePassword(String password, android.support.v7.app.AlertDialog passwordDialog) {
