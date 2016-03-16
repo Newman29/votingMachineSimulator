@@ -20,7 +20,6 @@ public class MainActivity extends AppCompatActivity {
     private String[] republicanCandidates = {
             "Ted Cruz",
             "John Kasich",
-            "Marco Rubio",
             "Donald Trump"
     };
 
